@@ -9,7 +9,7 @@ public class Main {
         frame.setVisible(true);
         for (;;){
             try {
-                TimeUnit.MILLISECONDS.sleep(50);
+                TimeUnit.MILLISECONDS.sleep(25);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

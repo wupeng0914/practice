@@ -24,12 +24,11 @@ public class Tank {
     private boolean living;
     private TankFrame tf;
 
-
-
-    public Tank(int x, int y, Direction dir) {
+    public Tank(int x, int y, Direction dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tf = tf;
     }
 
     /**
@@ -52,6 +51,34 @@ public class Tank {
                 break;
         }
         move();
+    }
+
+    /**
+     * 发射子弹
+     */
+    public void fire(){
+        int bx = 0, by = 0;
+        switch(dir){
+            case UP:
+                bx = x + ResourceMgr.goodTankU.getWidth()/2 - ResourceMgr.bulletU.getWidth()/2;
+                by = y;
+                break;
+            case RIGHT:
+                bx = x + ResourceMgr.goodTankR.getWidth();
+                by = y + ResourceMgr.goodTankR.getHeight()/2 - ResourceMgr.bulletR.getHeight()/2;
+                break;
+            case DOWN:
+                bx = x + ResourceMgr.goodTankR.getWidth()/2 - ResourceMgr.bulletR.getWidth()/2;
+                by = y + ResourceMgr.goodTankR.getHeight();
+                break;
+            case LEFT:
+                bx = x;
+                by = y + ResourceMgr.goodTankR.getHeight()/2 - ResourceMgr.bulletL.getHeight()/2;
+                break;
+            default:
+                break;
+        }
+        tf.addBullet(new Bullet(bx, by, dir));
     }
 
     /**

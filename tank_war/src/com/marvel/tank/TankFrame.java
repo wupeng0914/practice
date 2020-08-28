@@ -5,6 +5,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -21,13 +23,15 @@ public class TankFrame extends Frame {
 
     private Tank player;
 
+    private List<Bullet> bullets = new ArrayList<>();
+
     Random random = new Random();
     private TankFrame(){
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
         setTitle("Tank War");
 
-        player = new Tank(random.nextInt(GAME_WIDTH), random.nextInt(GAME_HEIGHT), Direction.UP);
+        player = new Tank(random.nextInt(GAME_WIDTH), random.nextInt(GAME_HEIGHT), Direction.UP, this);
 
         this.addWindowListener(new IWindowListener());
         this.addKeyListener(new IKeyListener());
@@ -35,8 +39,20 @@ public class TankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
+        Color color = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("当前子弹数量：" + bullets.size(), 10, 40);
+        g.setColor(color);
         //画出主战坦克
         player.paint(g);
+        //子弹
+        for (int i = 0; i < bullets.size(); i++) {
+            if (bullets.get(i).isLiving()){
+                bullets.get(i).paint(g);
+            } else {
+                bullets.remove(bullets.get(i));
+            }
+        }
     }
 
     /**
@@ -55,6 +71,13 @@ public class TankFrame extends Frame {
         gOffScreen.setColor(c);
         paint(gOffScreen);
         g.drawImage(offScreenImage, 0, 0, null);
+    }
+
+    /**
+     * 发射一颗子弹
+     */
+    public void addBullet(Bullet bullet) {
+        bullets.add(bullet);
     }
 
     /**
@@ -101,7 +124,6 @@ public class TankFrame extends Frame {
         @Override
         public void keyReleased(KeyEvent key) {
             int keyCode = key.getKeyCode();
-
             switch(keyCode){
                 case KeyEvent.VK_UP :
                     TU = false;
@@ -115,14 +137,19 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_LEFT :
                     TL = false;
                     break;
+                case KeyEvent.VK_CONTROL :
+                    player.fire();
+                    break;
                 default:
                     break;
             }
             changeTankDir();
         }
 
+        /**
+         * 改变坦克移动反向
+         */
         private void changeTankDir(){
-            Direction dir = player.getDir();
             if (!TU && !TR && !TD && !TL){
                 player.setMoving(false);
             } else {
