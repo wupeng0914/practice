@@ -22,7 +22,7 @@ import java.util.Date;
 public class ChatHadler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
     private static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     //当Channel中有新的事件消息时，会自动调用该方法
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame text) throws Exception {
