@@ -1,0 +1,19 @@
+server:
+  port: 10086
+spring:
+  application:
+    name: eureka-security-server
+  security:
+    # 配置spring security登录用户名、密码
+    user:
+      name: root
+      password: root
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    # 指定是否从注册中心获取服务（注册中心不需要开启）
+    fetch-registry: false
+    # 指定是否将服务注册到注册中心（注册中心不需要开启）
+    register-with-eureka: false

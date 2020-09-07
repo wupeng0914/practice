@@ -14,4 +14,36 @@ Eureka注册中心集群:<br/>
     修改Eureka-client，将其连接到集群： <br/>
         service-url：<br/>
             defaultZone： http://replica1:10010/eureka/, http://replica2:10000/eureka/ <br/>
+Eureka注册中心添加认证：<br/>
+    添加SpringSecurity模块：<br/>
+    `<dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-security</artifactId>
+     </dependency>`    
+    添加application.yml配置：<br/>
+    `server:
+       port: 8004
+     spring:
+       application:
+         name: eureka-security-server
+       security:
+         user:
+           # 配置spring security登录用户名和密码
+           name: root
+           password: root 
+     eureka:
+       instance:
+         hostname: localhost
+       client:
+         fetch-registry: false
+         register-with-eureka: false
+    `
+    添加Java配置类 WebSecurityConfig：<br/>
+    默认情况下添加SpringSecurity依赖的应用每个请求都需要添加CSRF token才能访问，Eureka客户端注册时并不会添加，所以需要配置/eureka/**路径不需要CSRF token。<br/>
+    eureka-client注册到有登录认证的注册中心：<br/>
+    http://${username}:${password}@${hostname}:${port}/eureka/ <br/>
+    
+    service-url:<br/>
+          # 此处需要修改注册中心地址格式<br/>
+          defaultZone: http://root:root@localhost:10086/eureka/<br/>
     
