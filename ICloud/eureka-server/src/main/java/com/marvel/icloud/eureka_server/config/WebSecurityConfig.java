@@ -1,4 +1,4 @@
-package com.marvel.icloud.config;
+package com.marvel.icloud.eureka_server.config;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

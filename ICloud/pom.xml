@@ -19,6 +19,7 @@
     <modules>
         <module>eureka-server</module>
         <module>eureka-client</module>
+        <module>user-service</module>
     </modules>
 
     <properties>
@@ -35,6 +36,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.12</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

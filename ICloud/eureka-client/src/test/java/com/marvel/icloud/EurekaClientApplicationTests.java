@@ -1,4 +1,4 @@
-package com.marvel.cloud;
+package com.marvel.icloud;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
