@@ -1,5 +1,6 @@
 package com.marvel.chat;
 
+import com.marvel.chat.server.WebSocketServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -27,7 +28,7 @@ public class WebSocketNettyServer {
                     //指定netty通道类型
                     .channel(NioServerSocketChannel.class)
                     //指定通道初始化器用来加载当Channel收到事件消息后，如何进行业务处理
-                    .childHandler(new WebSocketChannelInitializer());
+                    .childHandler(new WebSocketServerInitializer());
 
             //绑定服务器端口，以同步方式启动服务器
             ChannelFuture future = serverBootstrap.bind(9090).sync();
