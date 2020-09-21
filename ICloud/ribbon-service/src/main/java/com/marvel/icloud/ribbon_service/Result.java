@@ -1,4 +1,4 @@
-package com.marvel.icloud.user_service.result;
+package com.marvel.icloud.ribbon_service;
 
 import lombok.Data;
 
