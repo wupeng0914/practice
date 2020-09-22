@@ -29,6 +29,26 @@ public class UserServiceImpl implements UserService {
         return restTemplate.getForObject(userServicePath + "/user/query/{1}", Result.class, id);
     }
 
+    @Override
+    @HystrixCommand(fallbackMethod = "fallbackMethod",
+                    commandKey = "getUserCommand",
+                    groupKey = "getUserGroup",
+                    threadPoolKey = "getUserThreadPool")
+    public Result getUserCommand(Long id) {
+        return restTemplate.getForObject(userServicePath + "/user/query/{1}", Result.class, id);
+    }
+
+    @Override
+    @HystrixCommand(fallbackMethod = "fallbackMethod",ignoreExceptions = {NullPointerException.class})
+    public Result getUserException(Long id) {
+        if (id == 1){
+            throw new IndexOutOfBoundsException("哦豁，报错了");
+        } else if (id == 2){
+            throw new NullPointerException("哦豁，空指针喽");
+        }
+        return restTemplate.getForObject(userServicePath + "/user/query/{1}", Result.class, id);
+    }
+
     public Result fallbackMethod(@PathVariable Long id){
         return new Result("服务暂不可用", 500);
     }

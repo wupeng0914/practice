@@ -10,4 +10,8 @@ import com.marvel.icloud.hystrix_service.Result;
  **/
 public interface UserService {
     Result getUser(Long id);
+
+    Result getUserCommand(Long id);
+
+    Result getUserException(Long id);
 }
