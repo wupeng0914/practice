@@ -3,6 +3,10 @@ package com.marvel.icloud.hystrix_service.service.impl;
 import com.marvel.icloud.hystrix_service.Result;
 import com.marvel.icloud.hystrix_service.service.UserService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.cache.annotation.CacheResult;
+import org.apache.catalina.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,9 @@ import org.springframework.web.client.RestTemplate;
  **/
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -49,7 +56,19 @@ public class UserServiceImpl implements UserService {
         return restTemplate.getForObject(userServicePath + "/user/query/{1}", Result.class, id);
     }
 
+    @Override
+    @CacheResult(cacheKeyMethod = "getCacheKey")
+    @HystrixCommand(fallbackMethod = "fallbackMethod", commandKey = "getUserCache")
+    public Result getUserCache(Long id) {
+        LOGGER.info("getUserCache id：{}", id);
+        return restTemplate.getForObject(userServicePath + "/user/query/{1}", Result.class, id);
+    }
+
     public Result fallbackMethod(@PathVariable Long id){
         return new Result("服务暂不可用", 500);
+    }
+
+    public String getCacheKey(Long id){
+        return String.valueOf(id);
     }
 }

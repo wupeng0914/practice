@@ -14,4 +14,6 @@ public interface UserService {
     Result getUserCommand(Long id);
 
     Result getUserException(Long id);
+
+    Result getUserCache(Long id);
 }
