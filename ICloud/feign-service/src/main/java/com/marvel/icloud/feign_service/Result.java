@@ -1,4 +1,4 @@
-package com.marvel.icloud.hystrix_service;
+package com.marvel.icloud.feign_service;
 
 import lombok.Data;
 
